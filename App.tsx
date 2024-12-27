@@ -6,8 +6,7 @@
  */
 
 import React from 'react';
-import type {PropsWithChildren} from 'react';
-import PagerView from 'react-native-pager-view';
+import type { PropsWithChildren } from 'react';
 import {
   SafeAreaView,
   ScrollView,
@@ -19,12 +18,10 @@ import {
 } from 'react-native';
 
 import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
+  Colors
 } from 'react-native/Libraries/NewAppScreen';
+
+import HorizontalPager from './components/HorizontalPager';
 
 type SectionProps = PropsWithChildren<{
   title: string;
@@ -56,19 +53,6 @@ function Section({children, title}: SectionProps): React.JSX.Element {
   );
 }
 
-const MyPager = () => {
-  return (
-    <PagerView style={styles.pagerView} initialPage={0}>
-      <View key="1">
-        <Text>First page</Text>
-      </View>
-      <View key="2">
-        <Text>Second page</Text>
-      </View>
-    </PagerView>
-  );
-};
-
 function App(): React.JSX.Element {
   const isDarkMode = useColorScheme() === 'dark';
 
@@ -78,7 +62,7 @@ function App(): React.JSX.Element {
 
   return (
     <SafeAreaView style={backgroundStyle}>
-<MyPager />
+      <HorizontalPager />
     </SafeAreaView>
   );
 }
