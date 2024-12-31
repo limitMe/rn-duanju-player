@@ -5,7 +5,7 @@
  * @format
  */
 
-import React from 'react';
+import React, { useRef } from 'react';
 import type { PropsWithChildren } from 'react';
 import {
   SafeAreaView,
@@ -22,6 +22,7 @@ import {
 } from 'react-native/Libraries/NewAppScreen';
 
 import MatrixPager from './components/MatrixPager';
+import VideoPlayer from './components/VideoPlayer';
 
 function App(): React.JSX.Element {
   const isDarkMode = useColorScheme() === 'dark';
@@ -33,14 +34,11 @@ function App(): React.JSX.Element {
   return (
     <SafeAreaView style={backgroundStyle}>
       <MatrixPager>
-        <Text>This is what we what here</Text>
+        <VideoPlayer />
       </MatrixPager>
     </SafeAreaView>
   );
 }
 
-const styles = StyleSheet.create({
-
-});
 
 export default App;
