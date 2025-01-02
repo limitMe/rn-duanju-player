@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import type { PropsWithChildren } from 'react';
 import {
   StyleSheet,
@@ -16,9 +16,12 @@ const styles = StyleSheet.create({
   },
 });
 
-const VideoPlayer = () => {
+interface VideoPlayerProps {
+  source: ReactVideoSource
+}
+
+const VideoPlayer: React.FC<VideoPlayerProps> = ({ source }) => {
   const videoRef = useRef<VideoRef>(null);
-  const background: ReactVideoSource = { uri: 'https://vjs.zencdn.net/v/oceans.mp4' };
   const [paused, setPaused] = useState(false);
   const [holdTimeout, setHoldTimeout] = useState<NodeJS.Timeout | null>(null);
   const [rate, setRate] = useState(1);
@@ -59,7 +62,7 @@ const VideoPlayer = () => {
         ref={videoRef}
         repeat
         style={styles.backgroundVideo}
-        source={background}
+        source={source}
       />
     </TouchableWithoutFeedback>
   )

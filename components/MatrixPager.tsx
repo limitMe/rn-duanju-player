@@ -6,12 +6,24 @@ import {
   View,
 } from 'react-native';
 
-const MatrixPager: React.FC<PropsWithChildren<{}>> = ({ children }) => {
+interface MatrixPagerProps {
+  onScrollUp: () => void;
+  onScrollDown: () => void;
+  onScrollLeft: () => void;
+  onScrollRight: () => void;
+}
+
+const MatrixPager: React.FC<PropsWithChildren<MatrixPagerProps>> = ({
+   onScrollUp, onScrollDown, onScrollLeft, onScrollRight, children
+  }) => {
   const pagerRef = useRef<PagerView>(null);
   const handlePageSelected = (event: { nativeEvent: { position: number } }) => {    
     if (pagerRef.current && event.nativeEvent.position !== 1) {
       pagerRef.current.setPageWithoutAnimation(1)
     }
+    
+    if (event.nativeEvent.position == 0) { onScrollLeft() }
+    if (event.nativeEvent.position == 2) { onScrollRight() }
   };
 
   return (
@@ -25,7 +37,7 @@ const MatrixPager: React.FC<PropsWithChildren<{}>> = ({ children }) => {
         <VerticalPager />
       </View>
       <View key="2">
-        <VerticalPager>{children}</VerticalPager>
+        <VerticalPager onScrollUp={onScrollUp} onScrollDown={onScrollDown}>{children}</VerticalPager>
       </View>
       <View key="3">
         <VerticalPager />
@@ -34,13 +46,21 @@ const MatrixPager: React.FC<PropsWithChildren<{}>> = ({ children }) => {
   );
 };
 
-const VerticalPager: React.FC<PropsWithChildren<{}>> = ({ children }) => {
+interface VerticalPagerProps {
+  onScrollUp?: () => void;
+  onScrollDown?: () => void;
+}
+
+const VerticalPager: React.FC<PropsWithChildren<VerticalPagerProps>> = ({ onScrollUp, onScrollDown, children }) => {
   const hasChildren = React.Children.count(children) > 0
   const pagerRef = useRef<PagerView>(null);
   const handlePageSelected = (event: { nativeEvent: { position: number } }) => {    
     if (pagerRef.current && event.nativeEvent.position !== 1) {
       pagerRef.current.setPageWithoutAnimation(1)
     }
+
+    if (event.nativeEvent.position == 0) { onScrollUp?.() }
+    if (event.nativeEvent.position == 2) { onScrollDown?.() }
   };
 
   return (

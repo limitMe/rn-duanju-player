@@ -98,6 +98,13 @@ class DuanjuManager {
     DataPersistor.sharedInstance().setLastSeriesFilePath(series.fullpath)
     return `${series.fullpath}/${episode.filename}`
   }
+
+  public currentVideoFullPath(): string {
+    const series = this.allSeries[this.currentSeriesIndex]
+    const episodes = series.getEpisodes()
+    const episode = episodes[series.lastPlayedIndex] ?? episodes[0]
+    return `${series.fullpath}/${episode.filename}`
+  }
 }
 
 export default DuanjuManager;

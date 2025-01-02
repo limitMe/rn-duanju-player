@@ -18,7 +18,7 @@ import {
   PermissionsAndroid
 } from 'react-native';
 import RNFS from 'react-native-fs';
-
+import { ReactVideoSource } from 'react-native-video';
 import ManageExternalStorage from 'react-native-external-storage-permission';
 import {
   Colors
@@ -86,6 +86,13 @@ function App(): React.JSX.Element {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
   };
 
+  const defaultVideoURI = 'https://vjs.zencdn.net/v/oceans.mp4'
+  const [videoSource, setVideoSource] = useState<ReactVideoSource>({
+    uri: defaultVideoURI
+  });
+
+  const [manager, setManager] = useState<DuanjuManager | undefined>()
+
   useEffect(() => {
     const init = async () => {
       // Seems useless on latest Android but keep it for now
@@ -94,6 +101,12 @@ function App(): React.JSX.Element {
       const morePermissions = await ManageExternalStorage.checkAndGrantPermission();
 
       const manager = await initDuanjuManager()
+
+      setVideoSource({
+        uri: manager.currentVideoFullPath()
+      })
+
+      setManager(manager)
     };
 
     init()
@@ -101,8 +114,21 @@ function App(): React.JSX.Element {
 
   return (
     <SafeAreaView style={backgroundStyle}>
-      <MatrixPager>
-        <VideoPlayer />
+      <MatrixPager
+        onScrollUp={() => {
+          setVideoSource({uri: manager?.previousEposideFullPath() })
+        }}
+        onScrollDown={() => {
+          setVideoSource({uri: manager?.nextEposideFullPath() })
+        }}
+        onScrollLeft={() => {
+          setVideoSource({uri: manager?.previousSeriesFullPath() })
+        }}
+        onScrollRight={() => {
+          setVideoSource({uri: manager?.nextSeriesFullPath() })
+        }}
+      >
+        <VideoPlayer source={videoSource} />
       </MatrixPager>
     </SafeAreaView>
   );
